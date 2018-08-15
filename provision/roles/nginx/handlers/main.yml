@@ -1,0 +1,22 @@
+---
+
+- name: start service nginx, if not running
+  service:
+    name: nginx
+    state: started
+  listen:
+    - start nginx
+
+- name: reload service nginx, if running
+  service:
+    name: nginx
+    state: reloaded
+  listen:
+    - reload nginx
+
+- name: restart service nginx, if running
+  service:
+    name: nginx
+    state: restarted
+  listen:
+    - restart nginx

@@ -1,0 +1,7 @@
+---
+
+log_dir: /var/log
+nginx_log_dir: "{{ log_dir }}/nginx"
+static_root: "/usr/share/nginx/html"
+nginx_root: /etc/nginx
+nginx_error_log: "{{ log_dir }}/nginx/error.log"

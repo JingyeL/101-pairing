@@ -64,3 +64,19 @@ Scripting skills, elegance, understanding of the technologies you use, security,
 
 Hopefully this will emerge as we pair and converse.
 But feel free to comment your code, or put explanations in a pull request within the repo.
+
+
+## Jingye's sloution
+* create project - provision skeleton, incl. playbook, inventory file, roles
+* create AWS EC2 instance via console
+  * Spot instance, T2 Micro
+  * Security Group for port 80 access
+* AWS IAM key file: create ssh key file for ssh, ansible provisioning later, 
+(ref: https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html)  
+Then import the *.pub key to https://eu-west-2.console.aws.amazon.com/ec2/v2/home?region=eu-west-2#KeyPairs:sort=keyName
+* define inventory use the new created EC2 instance
+* implement ansible script to provision nginx
+* run ansible playbook
+```buildoutcfg
+ansible-playbook -i environments/demo/inventory myplay.yml -u ec2-user -v
+```

@@ -1,0 +1,57 @@
+---
+
+- name: All required variables have been defined
+  assert:
+    that:
+      - "{{ item }} is defined"
+  with_items:
+    - log_dir
+    - nginx_root
+    - nginx_log_dir
+    - static_root
+  tags: check_vars
+
+
+- name: create Ngix log dir if necessary
+  file:
+    state: directory
+    path: "{{ nginx_log_dir }}"
+    force: no
+    mode: "u=rwx,g=rw,o=rw"
+  with_items:
+    - "{{ nginx_error_log}}"
+  tags: ["logfile", "nginx"]
+
+- name: setting up static content dirs
+  file:
+    state: directory
+    path: "{{ item }} "
+    mode: "u=rwx,g=rw,o=rw"
+  with_items:
+      - static_root
+  tags: ["nginx"]
+
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+    update_cache: yes
+  tags: ["nginx"]
+
+- name: copy nginx.conf to the server
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+  notify: restart nginx
+  tags: ["nginx"]
+
+- name: write a sample file
+  copy:
+    content: "1.0.6"
+    dest: "{{static_root}}/version.txt"
+  tags: ["nginx"]
+
+
